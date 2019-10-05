@@ -7,12 +7,12 @@
 """
 
 from pyquery import PyQuery as pq
-import urllib
+import urllib.request
 import codecs
 
 text_file = codecs.open("Packages.txt", encoding='utf-8', mode="w")
 d = pq(url='http://cran.r-project.org/web/views/MachineLearning.html',
-       opener=lambda url, **kw: urllib.urlopen(url).read())
+       opener=lambda url, **kw: urllib.request.urlopen(url).read())
 
 for e in d("li").items():
     package_name = e("a").html()
@@ -21,7 +21,7 @@ for e in d("li").items():
         package_link = package_link.replace("..",
                                             'http://cran.r-project.org/web')
         dd = pq(url=package_link, opener=lambda url,
-                **kw: urllib.urlopen(url).read())
+                **kw: urllib.request.urlopen(url).read())
         package_description = dd("h2").html()
         text_file.write(" [%s](%s) - %s \n" % (package_name, package_link,
                                                package_description))
